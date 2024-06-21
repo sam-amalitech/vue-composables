@@ -5,7 +5,7 @@ export const formFields = [
 		inputName: "username",
 		placeholder: "Enter your name",
 		label: "Username",
-		class: "col-span-2",
+		class: "col-span-2 ",
 	},
 	{
 		inputName: "firstname",

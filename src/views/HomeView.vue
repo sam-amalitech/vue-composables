@@ -2,38 +2,26 @@
 import type { FormInitialValues, User } from "@/@types";
 import CustomForm from "@/components/CustomForm.vue";
 import UserCard from "@/components/UserCard.vue";
+import useFetch from "@/composables/useFetch";
+import useMutation from "@/composables/useMutation";
 import { formFields } from "@/data";
 import { getEnv } from "@/utils";
-import { ref } from "vue";
 
-const allUsers = ref<User[]>([]);
-
-fetch(`${getEnv("API_URL")}/users`)
-	.then((res) => res.json())
-	.then((data) => (allUsers.value = data));
+const { data: allUsers, refetch } = useFetch<User>(
+	`${getEnv("API_URL")}/users`
+);
+const { mutate } = useMutation(`${getEnv("API_URL")}/users`);
 
 const handleCreateUser = async (data?: FormInitialValues) => {
-	const json = await fetch(`${getEnv("API_URL")}/users`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
+	mutate.post(data!).then(() => {
+		refetch();
 	});
-	const res = await json.json();
-	allUsers.value.push(res);
 };
-
 const handleDeleteUser = (id: string) => {
-	fetch(`${getEnv("API_URL")}/users/${id}`, {
-		method: "DELETE",
-	})
-		.then((res) => res.json())
-		.then(() => {
-			allUsers.value = allUsers.value.filter((user) => user.id !== id);
-		});
+	mutate.delete({ id }).then(() => {
+		refetch();
+	});
 };
-
 </script>
 
 <template>
@@ -45,8 +33,13 @@ const handleDeleteUser = (id: string) => {
 			:persist="'userForm'"
 			:on-submit="handleCreateUser"
 			:form-validation="{
-				confirmPassword: (fieldValue, formValues) => {
-					return fieldValue === formValues.password
+				confirmPassword: (confirmPasswordField, formValues) => {
+					console.log(
+						'confirmPasswordField:::::::::::::::',
+						confirmPasswordField,
+						formValues
+					);
+					return confirmPasswordField === formValues.password
 						? false
 						: 'Passwords miss-match';
 				},

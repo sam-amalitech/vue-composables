@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite | json-server --watch db.json --port 4001",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
-    "json-server": "json-server --watch db.json --port 4001"
+    "jsonServer": "json-server --watch db.json --port 4001"
   },
   "dependencies": {
     "clsx": "^2.1.1",

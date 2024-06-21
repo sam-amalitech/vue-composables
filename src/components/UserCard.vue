@@ -15,19 +15,21 @@ defineProps({
 	id: {
 		default: "",
 		type: String,
-	}
+	},
 });
 
 const emit = defineEmits(["deleteUser"]);
 </script>
+
 <template>
 	<div
-		class="b  group p-4 max-w-[50%] rounded-xl flex items-center gap-x-4 relative"
+		class="b group p-4 max-w-[50%] rounded-xl flex items-center gap-x-4 relative"
 	>
 		<span
 			class="flex-shrink-0 flex items-center justify-center w-14 h-14 row-span-2 text-lg font-semibold text-[#3e5061] uppercase rounded-full bg-[#8ab1d4]"
-			>{{ firstname[0] }}{{ lastname[0] }}</span
 		>
+			{{ firstname[0] }}{{ lastname[0] }}
+		</span>
 		<p class="flex flex-col">
 			<span class="capitalize font-bold"
 				>{{ firstname }} {{ lastname }}</span
